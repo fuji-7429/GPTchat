@@ -1,30 +1,33 @@
+## 本当はタブ切り替えなどで履歴だけを見れるようにしたかったが、
+## st.chat_inputのバグで、タブなどに入れると最下部から移動してしまうらしい
+## なので、このアプリではチャット機能のみを実装
+
+
 from openai import OpenAI
 import streamlit as st
-# import time
 
 ## 初期設定
-# ページの横いっぱいに表示されるけど、なんか違う
-st.set_page_config(layout="wide")
+# レイアウトをサイドバーで設定できるようにするための事前準備
+if "layout" not in st.session_state:
+    st.session_state.layout = "centered"
+# ページの横いっぱいに表示する
+st.set_page_config(layout=st.session_state.layout)
 client = OpenAI()
 
-## 関数定義
-# 文章をゆっくり出力するやつ(AIの順次出力するやつ)
-# 重いため却下
-# def response_generator(text):
-#     for word in text.split():
-#         yield word + ""
-#         time.sleep(0.05)
 
 
-## メインページ出力
-# チャットメッセージのコンテナ
-# with st.chat_message("user"):
-#         st.write("Hello")
-    
-# チャット入力ウィジットで、メッセージ入力が可能
-# prompt = st.chat_input("Say samting")
-# if prompt:
-#     st.write(f"君の発言内容:{prompt}")
+## サイドバーによる設定
+with st.sidebar:
+    layout = st.toggle("Wideモードにする")
+    new_layout = "wide" if layout else "centered"
+    if new_layout != st.session_state.layout:
+        st.session_state.layout = new_layout
+        st.rerun() # ページの再読み込み(再起動とは違う)
+        
+    st.markdown("---")
+    use_stream = st.toggle("ストリーミング出力ON/OFF")
+
+
 
 ## チャットアプリの本格実装
 # チャット履歴を順番に表示
@@ -40,16 +43,6 @@ if prompt := st.chat_input("どうした？"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-# 返答を出力し保存する
-    # response = f"Echo: {prompt}"
-    # with st.chat_message("assistant"):
-    #     st.markdown(response)
-
-    # st.session_state.messages.append({"role": "assistant", "content": response})
-
-# リアルタイム出力っぽく出力することができるが、遅い
-    # with st.chat_message("assistant"):
-    #     st.write_stream(response_generator(response))
 
 # 生成AIの出力
     with st.chat_message("assistant"):
@@ -61,13 +54,12 @@ if prompt := st.chat_input("どうした？"):
                 ],
                 # チャンクごとにリアルタイムで出力される
                 # チャンクで別れるため、出力形式を変える必要がある
-                # トグルで切り替えてもいいかも
-                # stream=True, 
+                stream=use_stream, 
                 )
-        # stream=Trueの時
-        # response = st.write_stream(stream)
-        # stream=False(デフォルト)の時
-        response = stream.choices[0].message.content
+        if use_stream:
+            response = st.write_stream(stream)
+        else:
+            response = stream.choices[0].message.content
         st.write(response)
         
     st.session_state.messages.append({"role": "assistant", "content": response})
