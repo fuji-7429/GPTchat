@@ -30,6 +30,9 @@ with st.sidebar:
 
 
 ## チャットアプリの本格実装
+st.title("ChatGPT")
+st.markdown("---")
+
 # チャット履歴を順番に表示
 if "messages" not in st.session_state:
     st.session_state.messages = []
