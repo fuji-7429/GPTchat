@@ -11,6 +11,23 @@ streamlitとChatGPT APIを組み合わせたアプリケーション
   - 各pythonファイルを実行すれば、個別に使用可能
 
 
+# 使用方法
+1. チャットAIアプリ単体を使用する場合
+   1. `streamlit run app.py`または`streamlit run app2.py`を実行
+   2. それぞれ指定したPythonファイルのアプリが起動する
+2. チャットアプリ2つともを、ページで遷移できるようにする場合
+   1. `streamlit run main.py`を実行
+   2. サイドバーで、どちらのアプリを使用するか選択できる
+3. frontend,backendで分けた場合
+   1. 作成中
+
+
+
+
+
+
+
+
 現在開発中
 
 
