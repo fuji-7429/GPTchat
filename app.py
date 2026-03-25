@@ -12,7 +12,7 @@ if "questions" not in st.session_state:
 
 ## サイドバー
 with st.sidebar:
-    columns_ratio= st.slider("カラム幅比率", 0.05, 1.00, 0.25, 0.05)
+    columns_ratio= st.slider("カラム幅比率", 0.05, 0.95, 0.25, 0.05)
 
 
 
