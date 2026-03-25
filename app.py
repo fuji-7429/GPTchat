@@ -10,13 +10,20 @@ if "questions" not in st.session_state:
 
 
 
+## サイドバー
+with st.sidebar:
+    columns_ratio= st.slider("カラム幅比率", 0.05, 1.00, 0.25, 0.05)
+
+
+
 ## メインページ出力
 st.title("ChatGPT")
 st.markdown("---")
 
-col1, col2 = st.columns([1, 3])
+col1, col2 = st.columns([columns_ratio, 1-columns_ratio])
 
 with col1:
+    # 質問履歴を一覧として表示
     with st.container(border=True):
         st.write("過去質問一覧")
 
@@ -34,6 +41,7 @@ with col1:
 
 
 with col2:
+    # ChatAI本体
     st.subheader("ChatAI")
     prompt_text = st.text_area("質問を入力してください")
 
