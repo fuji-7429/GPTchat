@@ -19,7 +19,7 @@ streamlitとChatGPT APIを組み合わせたアプリケーション
    1. `streamlit run main.py`を実行
    2. サイドバーで、どちらのアプリを使用するか選択できる
 3. frontend,backendで分けた場合
-   1. 作成中
+   - 別フォルダでの開発を参照
 
 
 
