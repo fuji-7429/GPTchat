@@ -49,21 +49,22 @@ if prompt := st.chat_input("どうした？"):
 
 # 生成AIの出力
     with st.chat_message("assistant"):
-        stream = client.chat.completions.create(
-                model = "gpt-5-nano",
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ],
-                # チャンクごとにリアルタイムで出力される
-                # チャンクで別れるため、出力形式を変える必要がある
-                stream=use_stream, 
-                )
+        with st.spinner("AI回答作成中", show_time=True):
+            response = client.chat.completions.create(
+                    model = "gpt-5-nano",
+                    messages=[
+                        {"role": m["role"], "content": m["content"]}
+                        for m in st.session_state.messages
+                    ],
+                    # チャンクごとにリアルタイムで出力される
+                    # チャンクで別れるため、出力形式を変える必要がある
+                    stream=use_stream, 
+                    )
         if use_stream:
-            response = st.write_stream(stream)
+            answer = st.write_stream(response)
         else:
-            response = stream.choices[0].message.content
-            st.write(response)
+            answer = response.choices[0].message.content
+            st.write(answer)
         
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.messages.append({"role": "assistant", "content": answer})
 

@@ -98,14 +98,15 @@ with col2:
         submitted = st.form_submit_button("送信")
 
     if submitted and prompt_text:
-        st.session_state.questions.append({"role": "user", "content": prompt_text})
-        messages = [{"role": "system", "content": st.session_state.system_prompt}]
-        messages += st.session_state.questions
+        with st.spinner("AI回答作成中", show_time=True):
+            st.session_state.questions.append({"role": "user", "content": prompt_text})
+            messages = [{"role": "system", "content": st.session_state.system_prompt}]
+            messages += st.session_state.questions
 
-        response = client.chat.completions.create(
-            model = "gpt-5-nano",
-            messages = messages
-        )
+            response = client.chat.completions.create(
+                model = "gpt-5-nano",
+                messages = messages
+            )
 
         try:
             answer = response.choices[0].message.content
