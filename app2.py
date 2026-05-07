@@ -63,7 +63,7 @@ if prompt := st.chat_input("どうした？"):
             response = st.write_stream(stream)
         else:
             response = stream.choices[0].message.content
-        st.write(response)
+            st.write(response)
         
     st.session_state.messages.append({"role": "assistant", "content": response})
 

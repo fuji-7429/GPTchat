@@ -19,6 +19,15 @@ st.session_state.pages = {
     "chatai_fromst": chatai_fromst
 }
 
+# ページタイトルの設定等
+st.set_page_config(
+    page_icon=":speech_balloon:", 
+        # 参照:https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/
+    page_title="AIチャットボット",
+    # layout="wide" # 各ページで対応
+    initial_sidebar_state="expanded", # サイドバーのデフォルト表示
+    )
+
 
 # 実行
 pg.run()
